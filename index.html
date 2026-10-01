@@ -6,7 +6,7 @@
 <title>Ranking de Separação · CD-107</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏆</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Playfair+Display:ital,wght@1,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
 <style>
@@ -230,6 +230,116 @@ dialog::backdrop{background:rgba(3,8,22,.7);backdrop-filter:blur(3px)}
 .tv-body{display:contents}
 .tv.troca .tv-main,.tv.troca .tv-k,.tv.troca .tv-t b{animation:tvin .7s ease}
 @keyframes tvin{from{opacity:0;transform:translateY(1.2vh)}to{opacity:1;transform:none}}
+/* ================= PREMIAÇÃO ================= */
+.views{display:flex;gap:8px;margin-bottom:12px}
+.views button{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--bg2);border-radius:12px;padding:10px 16px;font:600 14px var(--fh);letter-spacing:.08em;text-transform:uppercase;color:var(--tx2)}
+.views button.on{border-color:var(--amb);color:var(--amb);background:linear-gradient(160deg,#1A2C5E,#132350)}
+#prem{display:none}
+.fld[hidden]{display:none}
+body.vprem #prem{display:block}
+body.vprem #tabs,body.vprem .ctl,body.vprem #kpis,body.vprem #board,body.vprem #foot{display:none}
+.pcard{background:var(--card);border:1px solid var(--line);border-radius:16px;margin-bottom:14px}
+.pcard>summary,.pcard>.ph{list-style:none;display:flex;align-items:center;gap:10px;padding:14px 18px;cursor:pointer;font:600 15px var(--fh);letter-spacing:.07em;text-transform:uppercase}
+.pcard>summary::-webkit-details-marker{display:none}
+.pcard>summary::after{content:"▾";margin-left:auto;color:var(--tx3);transition:.2s}
+.pcard[open]>summary::after{transform:rotate(180deg)}
+.pcard>summary small,.pcard>.ph small{font:500 12px var(--fb);letter-spacing:0;text-transform:none;color:var(--tx3)}
+.pbody{padding:4px 18px 18px;border-top:1px solid var(--line)}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:12px}
+.fld{display:flex;flex-direction:column;gap:5px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--tx3)}
+.fld input,.fld select{background:var(--bg2);border:1px solid var(--line2);border-radius:8px;padding:8px 10px;font:500 13.5px var(--fb);letter-spacing:0;text-transform:none;color:var(--tx)}
+.fld input[type=range]{padding:0;accent-color:var(--amb)}
+.fld .hint{font:400 11.5px var(--fb);text-transform:none;letter-spacing:0;color:var(--tx3)}
+.regras{margin:12px 0 0;padding:12px 14px;border-radius:10px;background:var(--bg2);border:1px dashed var(--line2);color:var(--tx2);font-size:12.5px;line-height:1.6}
+.regras b{color:var(--tx)}
+.dq-add{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-top:12px}
+.dq-add .fld{flex:1 1 170px}
+.dq-list{margin-top:12px;display:grid;gap:6px}
+.dq{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:10px;background:var(--bg2);border:1px solid var(--line);font-size:13px}
+.dq b{font-weight:600}
+.dq .mot{color:var(--red);font-size:12px;font-weight:600}
+.dq .x{margin-left:auto;border:1px solid var(--line2);background:var(--card);border-radius:7px;width:28px;height:28px}
+.pact{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 16px}
+.pact .btn{padding:11px 16px;font-size:13px}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
+.tcard{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.tcard h3{margin:0;padding:12px 16px;font:600 17px var(--fh);letter-spacing:.07em;text-transform:uppercase;color:var(--amb);border-bottom:1px solid var(--line);display:flex;align-items:baseline;gap:8px}
+.tcard h3 small{font:500 11.5px var(--fb);letter-spacing:0;text-transform:none;color:var(--tx3);margin-left:auto}
+.win{display:grid;grid-template-columns:40px 1fr auto auto;gap:10px;align-items:center;padding:10px 16px;border-bottom:1px solid rgba(34,53,107,.6)}
+.win .md{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;font:700 16px var(--fh);color:#14110a}
+.win.w1 .md{background:var(--gold)}.win.w2 .md{background:var(--silver)}.win.w3 .md{background:var(--bronze)}.win.we .md{background:var(--grn);font-size:15px}
+.win .nm{font-weight:600;font-size:13.5px;line-height:1.25}
+.win .nm small{display:block;font:500 11px var(--fm);color:var(--tx3)}
+.win .pz2{font-size:11px;color:var(--amb);font-weight:600}
+.win .sc{text-align:right;font:700 15px var(--fm)}
+.win .sc small{display:block;font:500 10.5px var(--fb);color:var(--tx3)}
+.win .ic{border:1px solid var(--line2);background:var(--bg2);border-radius:8px;padding:6px 8px;font-size:13px}
+.win.vazio{color:var(--tx3);font-size:12.5px;grid-template-columns:40px 1fr}
+.tfoot{padding:9px 16px;font-size:11.5px;color:var(--tx3)}
+.tfoot .mot{color:var(--red)}
+
+/* diálogo do certificado */
+#dCert{width:min(1040px,calc(100% - 24px))}
+.cform{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:12px}
+.cwho{padding:10px 12px;border-radius:10px;background:var(--card);border:1px solid var(--line);font-size:13px;margin-bottom:12px;color:var(--tx2)}
+.cwho b{color:var(--tx)}
+.cwho.err{border-color:var(--red);color:var(--red)}
+.prev{background:#2a3350;border-radius:12px;padding:14px;overflow:hidden;display:flex;justify-content:center}
+.prev .sc{transform-origin:top center}
+
+/* ---------- CERTIFICADO (A4 deitado) ---------- */
+.cert{width:297mm;height:210mm;position:relative;background:#FFFDF7;color:#13203F;font-family:var(--fb);overflow:hidden;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.cert .fr1{position:absolute;inset:8mm;border:2.2mm solid #0E1B3D}
+.cert .fr2{position:absolute;inset:12.5mm;border:.6mm solid #C99A2E}
+.cert .cn{position:absolute;width:26mm;height:26mm;border:.9mm solid #C99A2E}
+.cert .cn.a{left:15mm;top:15mm;border-right:0;border-bottom:0}.cert .cn.b{right:15mm;top:15mm;border-left:0;border-bottom:0}
+.cert .cn.c{left:15mm;bottom:15mm;border-right:0;border-top:0}.cert .cn.d{right:15mm;bottom:15mm;border-left:0;border-top:0}
+.cert .in{position:absolute;inset:20mm 28mm;display:flex;flex-direction:column;align-items:center;text-align:center}
+.cert .emp{font:600 4mm var(--fb);letter-spacing:.35em;text-transform:uppercase;color:#6B7590}
+.cert .tit{margin-top:6mm;font:700 15mm/1 var(--fh);letter-spacing:.12em;text-transform:uppercase;color:#0E1B3D}
+.cert .stit{margin-top:2.5mm;font:600 5mm var(--fh);letter-spacing:.45em;text-transform:uppercase;color:#C99A2E}
+.cert .conf{margin-top:9mm;font:400 4.6mm var(--fb);color:#4A5470}
+.cert .nome{margin-top:3mm;font:italic 700 15mm/1.05 'Playfair Display',Georgia,'Times New Roman',serif;color:#0E1B3D;max-width:230mm}
+.cert .linha{width:150mm;height:.4mm;background:linear-gradient(90deg,transparent,#C99A2E,transparent);margin:4mm 0}
+.cert .txt{font:400 4.7mm/1.55 var(--fb);color:#2C3654;max-width:215mm}
+.cert .txt b{color:#0E1B3D}
+.cert .nums{display:flex;gap:7mm;margin-top:5mm}
+.cert .nums div{border:.35mm solid #D9C38C;border-radius:2mm;padding:2mm 5mm;font:600 3mm var(--fb);letter-spacing:.12em;text-transform:uppercase;color:#7A6A3F;background:#FFF7E3}
+.cert .nums b{display:block;font:700 6mm var(--fh);letter-spacing:.02em;text-transform:none;color:#0E1B3D}
+.cert .ass{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:flex-end}
+.cert .ass div{width:70mm;border-top:.35mm solid #0E1B3D;padding-top:1.8mm;font:600 3.8mm var(--fb);color:#0E1B3D}
+.cert .ass small{display:block;font:500 3.1mm var(--fb);color:#6B7590}
+.cert .selo{position:absolute;left:50%;bottom:-3mm;transform:translateX(-50%);width:34mm;height:34mm}
+.cert .dt{margin-top:4mm;font:500 3.2mm var(--fb);color:#6B7590}
+
+/* ---------- CARTAZ (A4 em pé) ---------- */
+.mural{width:210mm;height:297mm;background:#0B1532;color:#fff;font-family:var(--fb);padding:12mm;display:flex;flex-direction:column;-webkit-print-color-adjust:exact;print-color-adjust:exact;overflow:hidden}
+.mural .hd{text-align:center;padding-bottom:5mm;border-bottom:1mm solid #FFB020}
+.mural .hd .ic{font-size:14mm;line-height:1}
+.mural .hd h1{margin:2mm 0 0;font:700 13mm/1 var(--fh);letter-spacing:.06em;text-transform:uppercase;color:#FFB020}
+.mural .hd p{margin:2mm 0 0;font:500 4.2mm var(--fb);color:#B7C3E3;letter-spacing:.05em}
+.mural .gd{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:5mm;margin-top:6mm;align-content:start}
+.mural .tc{background:#13224A;border:.4mm solid #2C4380;border-radius:3mm;padding:3.5mm 4mm}
+.mural .tc h2{margin:0 0 2.5mm;font:600 5.2mm var(--fh);letter-spacing:.08em;text-transform:uppercase;color:#FFB020}
+.mural .w{display:flex;align-items:center;gap:3mm;padding:1.6mm 0;border-top:.3mm solid rgba(255,255,255,.08)}
+.mural .w i{flex:0 0 auto;display:grid;place-items:center;width:8mm;height:8mm;border-radius:50%;font:700 4.2mm var(--fh);font-style:normal;color:#14110a}
+.mural .w.w1 i{background:#FFC93C;width:10mm;height:10mm;font-size:5mm}.mural .w.w2 i{background:#C9D3E6}.mural .w.w3 i{background:#E09A5F}.mural .w.we i{background:#2FD08A;font-size:3.6mm}
+.mural .w b{display:block;font:600 4.3mm/1.15 var(--fb)}
+.mural .w.w1 b{font-size:5mm}
+.mural .w span{display:block;font:500 3.1mm var(--fb);color:#A9B6D6}
+.mural .ft{margin-top:5mm;text-align:center;font:600 5mm var(--fh);letter-spacing:.08em;text-transform:uppercase;color:#FFB020}
+.mural.claro{background:#fff;color:#0E1B3D}.mural.claro .hd p,.mural.claro .w span,.mural.claro .ft small{color:#5A6072}.mural.claro .tc{background:#F5F7FB;border-color:#D0D6E4}.mural.claro .hd h1,.mural.claro .tc h2,.mural.claro .ft{color:#B86E00}.mural.claro .w{border-top-color:#E1E5EE}
+.mural .ft small{display:block;font:500 3.3mm var(--fb);letter-spacing:0;text-transform:none;color:#8C9BC4;margin-top:1.5mm}
+
+/* impressão */
+#printArea{display:none}
+@media print{
+  html,body{background:#fff!important}
+  body.printing>*:not(#printArea){display:none!important}
+  body.printing #printArea{display:block}
+  #printArea>*{page-break-after:always;break-after:page}
+  #printArea>*:last-child{page-break-after:auto;break-after:auto}
+}
 </style>
 </head>
 <body>
@@ -276,12 +386,79 @@ dialog::backdrop{background:rgba(3,8,22,.7);backdrop-filter:blur(3px)}
     </section>
   </div>
   <p class="foot" id="foot"></p>
+<section id="prem" aria-label="Premiação">
+  <details class="pcard" id="pRegras">
+    <summary>⚙ Regras da premiação <small id="pRegrasRes"></small></summary>
+    <div class="pbody">
+      <div class="pgrid">
+        <label class="fld">Peso dos volumes na nota · <span id="pwLbl"></span><input type="range" id="pwV" min="0" max="100" step="10" value="50"><span class="hint">O resto vai para o ritmo (vol/h). 50/50 equilibra quem produz muito com quem é rápido.</span></label>
+        <label class="fld">Mín. de horas em tarefa<input type="number" id="pMinH" min="0" max="24" step="0.5" value="2"><span class="hint">Quem ficou menos que isso não concorre.</span></label>
+        <label class="fld">Nome do período<input id="pPer" placeholder="ex.: Semana 40 · 28/09 a 04/10"><span class="hint">Vazio = datas do relatório.</span></label>
+        <label class="fld">Período anterior (para "Maior evolução")<button type="button" class="btn" id="pAntB" style="justify-content:center">⬆ Carregar relatório anterior</button><span class="hint" id="pAntSt">Nenhum carregado.</span><input type="file" id="pAntF" accept=".txt,.csv,.xlsx,.xls"></label>
+      </div>
+      <div class="pgrid">
+        <label class="fld">Prêmio 1º lugar<input id="pz1" value="Bombom + certificado"></label>
+        <label class="fld">Prêmio 2º lugar<input id="pz2" value="Bala + menção no mural"></label>
+        <label class="fld">Prêmio 3º lugar<input id="pz3" value="Menção no mural"></label>
+        <label class="fld">Prêmio maior evolução<input id="pze" value="Bombom + certificado"></label>
+      </div>
+      <div class="pgrid">
+        <label class="fld">Empresa / unidade<input id="pEmp" value="Comercial Zaffari · CD-107 Nova Santa Rita"></label>
+        <label class="fld">Assinatura 1 (nome)<input id="pA1" placeholder="Nome do líder"></label>
+        <label class="fld">Assinatura 1 (cargo)<input id="pA1c" value="Líder de Logística"></label>
+        <label class="fld">Assinatura 2 (nome)<input id="pA2" placeholder="Nome do gestor"></label>
+        <label class="fld">Assinatura 2 (cargo)<input id="pA2c" value="Gestor do CD"></label>
+      </div>
+      <div class="regras" id="pRegTxt"></div>
+    </div>
+  </details>
+
+  <details class="pcard" id="pDq">
+    <summary>🚫 Desclassificações <small id="pDqRes"></small></summary>
+    <div class="pbody">
+      <div class="dq-add">
+        <label class="fld">Matrícula<input id="dqM" list="dlMat" placeholder="Digite a matrícula" inputmode="numeric"></label>
+        <label class="fld">Motivo<select id="dqMot"><option>Divergência de separação</option><option>Ocorrência de segurança</option><option>Falta / atraso</option><option>Outro</option></select></label>
+        <label class="fld">Observação<input id="dqObs" placeholder="opcional"></label>
+        <button type="button" class="btn pri" id="dqAdd" style="height:38px">Desclassificar</button>
+      </div>
+      <div class="dq-list" id="dqList"></div>
+    </div>
+  </details>
+
+  <div class="pact">
+    <button type="button" class="btn pri" id="pCertAll">🖨 Certificados dos vencedores</button>
+    <button type="button" class="btn" id="pMural">🖨 Cartaz do mural</button>
+    <label class="chk" style="display:inline-flex;align-items:center;gap:6px;color:var(--tx2);font-size:12.5px"><input type="checkbox" id="pClaro"> Cartaz em fundo branco (gasta menos tinta)</label>
+    <button type="button" class="btn" id="pCertMat">🎓 Certificado por matrícula</button>
+  </div>
+  <div class="tgrid" id="tgrid"></div>
+  <datalist id="dlMat"></datalist>
+</section>
 </main>
 
 <dialog id="dlg" aria-labelledby="dNome">
   <div class="dh"><div><h2 id="dNome"></h2><p id="dSub"></p></div><button type="button" class="x" id="dX" aria-label="Fechar">×</button></div>
   <div class="db" id="dBody"></div>
 </dialog>
+<dialog id="dCert" aria-labelledby="dCertT">
+  <div class="dh"><div><h2 id="dCertT">Certificado por matrícula</h2><p>Gere o certificado de qualquer colaborador do relatório carregado</p></div><button type="button" class="x" id="dcX" aria-label="Fechar">×</button></div>
+  <div class="db">
+    <div class="cform">
+      <label class="fld">Matrícula<input id="cMat" list="dlMat" placeholder="ex.: 790044" inputmode="numeric"></label>
+      <label class="fld">Reconhecimento<select id="cTipo">
+        <option value="auto">Automático (pela premiação)</option>
+        <option value="1">1º lugar do turno</option><option value="2">2º lugar do turno</option><option value="3">3º lugar do turno</option>
+        <option value="e">Maior evolução</option><option value="d">Destaque da separação</option><option value="c">Personalizado…</option></select></label>
+      <label class="fld" id="cTxtL" hidden>Texto do reconhecimento<input id="cTxt" placeholder="ex.: Comprometimento e trabalho em equipe"></label>
+    </div>
+    <div class="cwho" id="cWho">Digite a matrícula.</div>
+    <div class="prev" id="cPrev"></div>
+    <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:14px"><button type="button" class="btn" id="cImg">📷 Baixar imagem</button><button type="button" class="btn pri" id="cPrint" disabled>🖨 Imprimir certificado</button></div>
+  </div>
+</dialog>
+<div id="printArea"></div>
+<style id="pgSize"></style>
 <div class="toast" id="toast" role="status"></div>
 <div class="drop" id="drop"><div>Solte o relatório aqui</div></div>
 <div class="cap" id="cap" aria-hidden="true"></div>
@@ -486,6 +663,7 @@ function render(){
     +`<span class="warn" style="color:var(--amb)">●</span> = tem tarefa com mais de 90 min, o que derruba o ritmo. Clique num separador para ver as tarefas. `
     +`Para comparar pessoas de forma justa, use a aba do turno: bebidas rende muito mais volume que bazar.`;
   location.replace('#'+encodeURIComponent(turno==='__all'?'todos':turno));
+  if(window.renderPrem) renderPrem();
 }
 
 /* ---------------- detalhe do separador ---------------- */
@@ -664,6 +842,197 @@ render();
 
   $('#bTv').onclick=()=>entrar(true);
   if(/[?&]tv\b/.test(location.search)) entrar(false);   // tela cheia precisa de um clique: aperte F ou ⛶
+})();
+/* =====================================================================
+   PREMIAÇÃO · critério combinado, desclassificações, maior evolução,
+   certificados (A4 deitado) e cartaz do mural (A4 em pé)
+   Fica só na tela normal: o modo TV não mostra nada disto.
+   ===================================================================== */
+(function(){
+  const KP='cd107_ranking_premio', KA='cd107_ranking_sep_anterior';
+  const CAMPOS=['pClaro','pwV','pMinH','pPer','pz1','pz2','pz3','pze','pEmp','pA1','pA1c','pA2','pA2c'];
+  let P={dq:[]}, ANT=null, view='rank', ultimo=null;
+  try{ P=Object.assign({dq:[]},JSON.parse(localStorage.getItem(KP)||'{}')); }catch(e){}
+  try{ ANT=JSON.parse(localStorage.getItem(KA)||'null'); }catch(e){}
+  CAMPOS.forEach(id=>{ if(P[id]==null) return; const el=$('#'+id); if(el.type==='checkbox') el.checked=!!P[id]; else el.value=P[id]; });
+  try{ view=JSON.parse(localStorage.getItem(LS_PREF)||'{}').view||'rank'; }catch(e){}
+  const salvar=()=>{ CAMPOS.forEach(id=>{ const el=$('#'+id); P[id]=el.type==='checkbox'?el.checked:el.value; }); try{ localStorage.setItem(KP,JSON.stringify(P)); }catch(e){} };
+  const v=id=>$('#'+id).value.trim();
+  const MOT_CURTO={'Divergência de separação':'divergência','Ocorrência de segurança':'segurança','Falta / atraso':'falta/atraso','Outro':'outro'};
+
+  /* ---------- troca Ranking ↔ Premiação ---------- */
+  const views=document.createElement('div'); views.className='views';
+  views.innerHTML='<button type="button" data-v="rank">🏆 Ranking</button><button type="button" data-v="prem">🎖 Premiação</button>';
+  $('.wrap').insertBefore(views,$('#tabs'));
+  function setView(x){ view=x; document.body.classList.toggle('vprem',x==='prem'); views.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v===x));
+    try{ const p=JSON.parse(localStorage.getItem(LS_PREF)||'{}'); p.view=x; localStorage.setItem(LS_PREF,JSON.stringify(p)); }catch(e){}
+    if(x==='prem') renderPrem(); }
+  views.addEventListener('click',e=>{ const b=e.target.closest('button'); if(b) setView(b.dataset.v); });
+
+  /* ---------- cálculo ---------- */
+  const periodoAuto=()=>{ if(!T.length) return ''; const a=new Date(Math.min(...T.map(t=>t.ini))), b=new Date(Math.max(...T.map(t=>t.fim)));
+    const d=x=>`${p2(x.getDate())}/${p2(x.getMonth()+1)}/${x.getFullYear()}`; return d(a)===d(b)?d(a):`${d(a)} a ${d(b)}`; };
+  const periodo=()=>v('pPer')||periodoAuto();
+  const dqDe=k=>P.dq.find(d=>d.mat===k);
+  function calcular(){
+    const wV=(+$('#pwV').value||0)/100, wR=1-wV, min=+$('#pMinH').value||0;
+    const all=tarefas(), prev=ANT?new Map(pessoas(ANT.t.filter(t=>!$('#oGen').checked||!GENERICO.test(t.nome))).map(p=>[p.k,p])):null;
+    return equipes().map(eq=>{
+      const ps=pessoas(all.filter(t=>t.eq===eq));
+      const fora=ps.filter(p=>dqDe(p.k)), poucas=ps.filter(p=>!dqDe(p.k)&&p.h<min);
+      const ok=ps.filter(p=>!dqDe(p.k)&&p.h>=min);
+      const mV=Math.max(1e-9,...ok.map(p=>p.vol)), mR=Math.max(1e-9,...ok.map(p=>p.volh));
+      ok.forEach(p=>{ p.nota=100*(wV*p.vol/mV + wR*p.volh/mR); });
+      ok.sort((a,b)=>b.nota-a.nota||b.vol-a.vol);
+      let evo=null;
+      if(prev) ok.forEach(p=>{ const q=prev.get(p.k); if(!q||q.h<min||!(q.volh>0)) return; p.evo=(p.volh/q.volh-1)*100; p.volhAnt=q.volh; if(p.evo>0 && (!evo||p.evo>evo.evo)) evo=p; });
+      return {eq, top:ok.slice(0,3), evo, n:ps.length, fora, poucas};
+    });
+  }
+
+  /* ---------- tela ---------- */
+  function renderPrem(){
+    if(view!=='prem') return;
+    const wV=+$('#pwV').value; $('#pwLbl').textContent=`${wV}% volumes · ${100-wV}% ritmo`;
+    $('#pRegrasRes').textContent=`nota = ${wV}% volumes + ${100-wV}% vol/h · mín. ${String(v('pMinH')).replace('.',',')} h · ${periodo()}`;
+    $('#pAntSt').textContent=ANT?`${ANT.arquivo} · ${fI(ANT.t.length)} tarefas`:'Nenhum carregado: a categoria Maior evolução fica desligada.';
+    $('#pRegTxt').innerHTML=`<b>Como funciona:</b> cada turno tem seu próprio pódio. A <b>nota (0 a 100)</b> soma ${wV}% dos volumes e ${100-wV}% do ritmo (vol/h), cada um comparado com o melhor do turno. `
+      +`Só concorre quem ficou <b>${String(v('pMinH')).replace('.',',')} h ou mais</b> em tarefa e <b>não está desclassificado</b> (divergência, segurança, falta…). `
+      +`<b>Maior evolução</b> = quem mais aumentou o vol/h em relação ao período anterior (precisa carregar o relatório anterior).`;
+    $('#pDqRes').textContent=P.dq.length?`${P.dq.length} colaborador(es) fora da disputa`:'ninguém desclassificado';
+    const pm=new Map(pessoas(T).map(p=>[p.k,p]));
+    $('#dqList').innerHTML=P.dq.map((d,i)=>{ const p=pm.get(d.mat); return `<div class="dq"><b>${esc(d.mat)}</b> ${p?esc(nomeBonito(p.nome))+' · '+esc(p.eq):'<i style="color:var(--tx3)">não está neste relatório</i>'} <span class="mot">${esc(d.mot)}</span>${d.obs?`<span style="color:var(--tx3)">${esc(d.obs)}</span>`:''}<button type="button" class="x" data-i="${i}" title="Tirar da lista">×</button></div>`; }).join('');
+    $('#dlMat').innerHTML=[...pm.values()].sort((a,b)=>a.nome.localeCompare(b.nome)).map(p=>`<option value="${esc(p.k)}">${esc(nomeBonito(p.nome))} · ${esc(p.eq)}</option>`).join('');
+    ultimo=calcular();
+    const pz={1:v('pz1'),2:v('pz2'),3:v('pz3'),e:v('pze')};
+    const linha=(p,n,cls)=>`<div class="win ${cls}"><span class="md">${n==='e'?'↗':n}</span>
+      <div class="nm">${esc(nomeBonito(p.nome))}<small>${esc(p.k)}${pz[n]?` · <span class="pz2">${esc(pz[n])}</span>`:''}</small></div>
+      <div class="sc">${n==='e'?`+${fI(p.evo)}%<small>${fI(p.volhAnt)} → ${fI(p.volh)} vol/h</small>`:`${fI(p.nota)}<small>${fI(p.vol)} vol · ${fI(p.volh)}/h</small>`}</div>
+      <button type="button" class="ic" data-cert="${esc(p.k)}|${n}" title="Imprimir certificado">🎓</button></div>`;
+    $('#tgrid').innerHTML=ultimo.map(r=>`<article class="tcard"><h3>${esc(r.eq)}<small>${r.n} separador(es)</small></h3>
+      ${[0,1,2].map(i=>r.top[i]?linha(r.top[i],i+1,'w'+(i+1)):`<div class="win vazio"><span></span><span>${i+1}º lugar: ninguém elegível</span></div>`).join('')}
+      ${r.evo?linha(r.evo,'e','we'):`<div class="win vazio"><span></span><span>Maior evolução: ${ANT?'ninguém melhorou o ritmo':'carregue o período anterior'}</span></div>`}
+      <div class="tfoot">${r.fora.length?`Desclassificados: ${r.fora.map(p=>`${esc(nomeCurto(p.nome))} <span class="mot">(${esc(MOT_CURTO[dqDe(p.k).mot]||dqDe(p.k).mot)})</span>`).join(', ')}<br>`:''}${r.poucas.length?`${r.poucas.length} com menos de ${String(v('pMinH')).replace('.',',')} h não concorrem`:'Todos com tempo suficiente concorrem'}</div></article>`).join('');
+  }
+  window.renderPrem=renderPrem;
+
+  /* ---------- certificado ---------- */
+  const SELO=`<svg class="selo" viewBox="0 0 100 100" aria-hidden="true">${Array.from({length:24},(_,i)=>{ const a=i*15*Math.PI/180; return '<circle cx="'+(50+43*Math.cos(a)).toFixed(2)+'" cy="'+(50+43*Math.sin(a)).toFixed(2)+'" r="6.5" fill="#C99A2E"/>'; }).join('')}
+    <circle cx="50" cy="50" r="42" fill="#C99A2E"/><circle cx="50" cy="50" r="36" fill="#D9B04A"/><circle cx="50" cy="50" r="33" fill="none" stroke="#FFF3CF" stroke-width="1.2"/>
+    <text x="50" y="49" text-anchor="middle" font-family="Oswald,Arial" font-weight="700" font-size="17" fill="#3B2A05">CD-107</text>
+    <text x="50" y="62" text-anchor="middle" font-family="Inter,Arial" font-weight="700" font-size="7.5" letter-spacing="1.5" fill="#3B2A05">SEPARAÇÃO</text></svg>`;
+  const TIT={1:['1º lugar','Certificado de Excelência'],2:['2º lugar','Certificado de Excelência'],3:['3º lugar','Certificado de Excelência'],e:['Maior evolução','Certificado de Evolução'],d:['Destaque da separação','Certificado de Reconhecimento'],c:['','Certificado de Reconhecimento']};
+  function certHTML(p,tipo,txtLivre){
+    const per=periodo(), [cat,tit]=TIT[tipo]||TIT.d;
+    let frase;
+    if(tipo==='e') frase=`pela <b>maior evolução do ${esc(p.eq)}</b> no Ranking de Separação, aumentando o ritmo de ${fI(p.volhAnt||0)} para <b>${fI(p.volh)} volumes por hora</b> (+${fI(p.evo||0)}%) no período de <b>${esc(per)}</b>.`;
+    else if(tipo==='c') frase=`${esc(txtLivre||'pelo comprometimento e pela dedicação na separação')} · período de <b>${esc(per)}</b>.`;
+    else if(tipo==='d') frase=`pelo <b>destaque na separação</b> no ${esc(p.eq)}, com <b>${fI(p.vol)} volumes</b> separados no período de <b>${esc(per)}</b>.`;
+    else frase=`por conquistar o <b>${cat} do ${esc(p.eq)}</b> no Ranking de Separação do período de <b>${esc(per)}</b>, com dedicação, ritmo e qualidade.`;
+    const hoje=new Date(), dt=`Nova Santa Rita, ${hoje.toLocaleDateString('pt-BR',{day:'numeric',month:'long',year:'numeric'})}`;
+    return `<div class="cert"><div class="fr1"></div><div class="fr2"></div><div class="cn a"></div><div class="cn b"></div><div class="cn c"></div><div class="cn d"></div>
+      <div class="in">
+        <div class="emp">${esc(v('pEmp'))}</div>
+        <div class="tit">Certificado</div>
+        <div class="stit">${esc(tit.replace(/^Certificado /,''))}</div>
+        <div class="conf">Concedido a</div>
+        <div class="nome" style="font-size:${nomeBonito(p.nome).length>34?10.5:nomeBonito(p.nome).length>26?12.5:15}mm">${esc(nomeBonito(p.nome).replace(/´/g,'’'))}</div>
+        <div class="linha"></div>
+        <div class="txt">Matrícula ${esc(p.k)} · ${frase}</div>
+        <div class="nums"><div>Volumes<b>${fI(p.vol)}</b></div><div>Ritmo<b>${fI(p.volh)} vol/h</b></div><div>Peso<b>${fI(p.peso)} kg</b></div><div>Tarefas<b>${p.n}</b></div></div>
+        <div class="ass" style="position:absolute;left:0;right:0;bottom:0">
+          <div>${esc(v('pA1')||' ')}<small>${esc(v('pA1c'))}</small></div>
+          ${SELO}
+          <div>${esc(v('pA2')||' ')}<small>${esc(v('pA2c'))}</small></div>
+        </div>
+        <div class="dt">${dt}</div>
+      </div></div>`;
+  }
+  function imprimir(html,orient){
+    $('#pgSize').textContent=`@page{size:A4 ${orient};margin:0}`;
+    $('#printArea').innerHTML=html; document.body.classList.add('printing');
+    const pronto=document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve();
+    pronto.then(()=>setTimeout(()=>print(),150));
+  }
+  addEventListener('afterprint',()=>{ if(!document.body.classList.contains('printing')) return; document.body.classList.remove('printing'); $('#printArea').innerHTML=''; });
+
+  function pessoaDe(k){ return pessoas(tarefas().filter(t=>(t.mat||t.nome)===k))[0]||null; }
+  function premioDe(k){   // o que essa pessoa ganhou na premiação atual (1, 2, 3, 'e' ou null)
+    const r=(ultimo||calcular()); for(const x of r){ const i=x.top.findIndex(p=>p.k===k); if(i>=0) return {tipo:String(i+1),p:x.top[i]}; if(x.evo&&x.evo.k===k) return {tipo:'e',p:x.evo}; } return null;
+  }
+
+  /* certificados de todos os vencedores (um por folha) */
+  $('#pCertAll').onclick=()=>{
+    const r=ultimo||calcular(), out=[];
+    r.forEach(x=>{ x.top.forEach((p,i)=>out.push(certHTML(p,String(i+1)))); if(x.evo) out.push(certHTML(x.evo,'e')); });
+    if(!out.length){ toast('Nenhum vencedor para imprimir'); return; }
+    imprimir(out.join(''),'landscape'); toast(`${out.length} certificado(s) · escolha "Salvar como PDF" se quiser guardar`);
+  };
+  $('#tgrid').addEventListener('click',e=>{ const b=e.target.closest('[data-cert]'); if(!b) return;
+    const [k,t]=b.dataset.cert.split('|'), r=ultimo||calcular();
+    let p=null; r.forEach(x=>{ if(t==='e'&&x.evo&&x.evo.k===k) p=x.evo; x.top.forEach(q=>{ if(q.k===k&&t!=='e') p=q; }); });
+    if(p) imprimir(certHTML(p,t),'landscape'); });
+
+  /* cartaz do mural */
+  $('#pMural').onclick=()=>{
+    const r=(ultimo||calcular()).filter(x=>x.top.length);
+    const w=(p,n,cls)=>`<div class="w ${cls}"><i>${n==='e'?'↗':n}</i><div><b>${esc(nomeCurto(p.nome))}</b><span>${n==='e'?`+${fI(p.evo)}% no ritmo · ${fI(p.volh)} vol/h`:`${fI(p.vol)} volumes · ${fI(p.volh)} vol/h`}</span></div></div>`;
+    const html=`<div class="mural${$('#pClaro').checked?' claro':''}"><div class="hd"><div class="ic">🏆</div><h1>Destaques da Separação</h1><p>${esc(v('pEmp'))} · ${esc(periodo())}</p></div>
+      <div class="gd">${r.map(x=>`<div class="tc"><h2>${esc(x.eq)}</h2>${x.top.map((p,i)=>w(p,i+1,'w'+(i+1))).join('')}${x.evo?w(x.evo,'e','we'):''}</div>`).join('')}</div>
+      <div class="ft">Parabéns, time! 👏<small>Critério: ${v('pwV')}% volumes + ${100-+v('pwV')}% ritmo · sem divergências e sem ocorrências de segurança · ranking completo no painel</small></div></div>`;
+    imprimir(html,'portrait');
+  };
+
+  /* desclassificações */
+  $('#dqAdd').onclick=()=>{
+    const m=v('dqM'); if(!m){ $('#dqM').focus(); return; }
+    if(dqDe(m)){ toast('Essa matrícula já está na lista'); return; }
+    P.dq.push({mat:m,mot:$('#dqMot').value,obs:v('dqObs'),em:Date.now()}); $('#dqM').value=''; $('#dqObs').value='';
+    salvar(); renderPrem(); toast('Desclassificado da premiação');
+  };
+  $('#dqM').addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); $('#dqAdd').click(); } });
+  $('#dqList').addEventListener('click',e=>{ const b=e.target.closest('[data-i]'); if(!b) return; P.dq.splice(+b.dataset.i,1); salvar(); renderPrem(); });
+
+  /* período anterior */
+  $('#pAntB').onclick=()=>$('#pAntF').click();
+  $('#pAntF').addEventListener('change',async e=>{ const f=e.target.files[0]; e.target.value=''; if(!f) return;
+    try{ const t=await lerArquivo(f); ANT={arquivo:f.name,t}; try{ localStorage.setItem(KA,JSON.stringify(ANT)); }catch(err){} renderPrem(); toast(`Período anterior: ${fI(t.length)} tarefas`); }
+    catch(err){ alert('Não consegui ler o relatório anterior: '+err.message); } });
+  CAMPOS.forEach(id=>$('#'+id).addEventListener('input',()=>{ salvar(); renderPrem(); }));
+
+  /* ---------- certificado por matrícula ---------- */
+  let cAtual=null;
+  function cUpd(){
+    const k=v('cMat'), tipoSel=$('#cTipo').value; $('#cTxtL').hidden=tipoSel!=='c';
+    const p=k?pessoaDe(k):null, who=$('#cWho');
+    if(!p){ cAtual=null; $('#cPrint').disabled=true; $('#cPrev').innerHTML=''; who.className='cwho'+(k?' err':''); who.textContent=k?'Matrícula não encontrada no relatório carregado.':'Digite a matrícula.'; return; }
+    const pr=premioDe(k), dq=dqDe(k);
+    let tipo=tipoSel==='auto'?(pr?pr.tipo:'d'):tipoSel;
+    let base=pr&&pr.tipo===tipo?pr.p:p;
+    if(tipo==='e' && base.evo==null && ANT){ const q=pessoas(ANT.t.filter(t=>(t.mat||t.nome)===k))[0]; if(q&&q.volh>0){ base.volhAnt=q.volh; base.evo=(base.volh/q.volh-1)*100; } }
+    who.className='cwho'; who.innerHTML=`<b>${esc(nomeBonito(p.nome))}</b> · ${esc(p.eq)} · ${fI(p.vol)} volumes · ${fI(p.volh)} vol/h · ${hm(p.seg)} em tarefa`
+      +(pr?` · <span style="color:var(--amb)">premiado: ${pr.tipo==='e'?'maior evolução':pr.tipo+'º lugar'}</span>`:'')
+      +(dq?` · <span style="color:var(--red)">desclassificado (${esc(dq.mot)})</span>`:'')
+      +(tipoSel==='auto'&&!pr?' · sem colocação: sai como "Destaque da separação"':'');
+    if(tipo==='e' && !(base.evo>0)) who.innerHTML+=` · <span style="color:var(--red)">${ANT?(base.evo!=null?'não aumentou o ritmo em relação ao período anterior':'não aparece no período anterior'):'sem dado de evolução (carregue o período anterior)'}</span>`;
+    cAtual=certHTML(base,tipo,v('cTxt')); $('#cPrint').disabled=false;
+    $('#cPrev').innerHTML=`<div class="sc">${cAtual}</div>`;
+    const sc=$('#cPrev .sc'), w=$('#cPrev').clientWidth-28, cw=sc.firstElementChild.offsetWidth, s=Math.min(1,w/cw);
+    sc.style.transform=`scale(${s})`; $('#cPrev').style.height=(sc.firstElementChild.offsetHeight*s+28)+'px';
+  }
+  $('#pCertMat').onclick=()=>{ renderPrem(); $('#dCert').showModal(); $('#cMat').focus(); cUpd(); };
+  ['cMat','cTipo','cTxt'].forEach(id=>$('#'+id).addEventListener('input',cUpd));
+  $('#dcX').onclick=()=>$('#dCert').close();
+  $('#cPrint').onclick=()=>{ if(!cAtual) return; $('#dCert').close(); imprimir(cAtual,'landscape'); };
+  $('#cImg').onclick=async()=>{
+    if(!cAtual) return; if(!window.html2canvas){ toast('Gerador de imagem não carregou'); return; }
+    const cap=$('#cap'); cap.style.width='auto'; cap.style.padding='0'; cap.innerHTML=cAtual;
+    try{ const cv=await html2canvas(cap.firstElementChild,{scale:2,backgroundColor:'#FFFDF7'}); const a=document.createElement('a'); a.href=cv.toDataURL('image/png'); a.download=`Certificado_${v('cMat')}.png`; a.click(); }
+    catch(e){ toast('Não consegui gerar a imagem'); }
+    cap.innerHTML=''; cap.style.width=''; cap.style.padding='';
+  };
+
+  setView(view);
 })();
 </script>
 </body>
